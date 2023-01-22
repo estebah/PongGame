@@ -10,6 +10,9 @@ const canvasY = canvas.height;
 
 const speed = 30;
 
+let point = new Audio('./audio/point.wav');
+let bounce = new Audio('./audio/bounce.wav');
+
 let ballX = canvasX / 2;
 let ballY = canvasY / 2;
 
@@ -54,8 +57,12 @@ function draw(ballX, ballY) {
 function moveBall() {
   if (ballY <= 0 + ballRadius) {
     ballYDirection = 1;
+    bounce.play();
+    bounce.currentTime = 0;
   } else if (ballY >= canvasY - ballRadius) {
     ballYDirection = -1;
+    bounce.play();
+    bounce.currentTime = 0;
   }
 
   ballX += ballSpeed * ballXDirection;
@@ -67,12 +74,16 @@ function checkCollision() {
     if (ballY > paddle1.y && ballY < paddle1.y + paddle1.height) {
       ballX = paddle1.x + paddle1.width + ballRadius;
       ballXDirection *= -1;
+      bounce.play();
+      bounce.currentTime = 0;
     }
   }
   if (ballX >= paddle2.x - ballRadius) {
     if (ballY > paddle2.y && ballY < paddle2.y + paddle2.height) {
       ballX = paddle2.x - ballRadius;
       ballXDirection *= -1;
+      bounce.play();
+      bounce.currentTime = 0;
     }
   }
 }
@@ -81,11 +92,13 @@ function score() {
   if (ballX <= 0 + ballRadius) {
     scorePlayer++;
     scores[0].innerHTML = scorePlayer;
+    point.play();
     ballX = canvasX / 2;
     ballY = canvasY / 2;
   } else if (ballX >= canvasX - ballRadius) {
     scorePlayer2++;
     scores[1].innerHTML = scorePlayer2;
+    point.play();
     ballX = canvasX / 2;
     ballY = canvasY / 2;
   }
